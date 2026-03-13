@@ -1,11 +1,20 @@
 import string
 import random
+from storage import StorageManager
 
 class PasswordService:
-    
+    def __init__(self):
+        self.storage = StorageManager()
+
     def add_password(self, website, username, password):
-        print("Add a Password called")
-        
+        """Create and add a new credential."""
+        data = {
+            "website": website,
+            "username": username,
+            "password": password
+        }
+        return self.storage.save([data])
+
     def view_passwords(self):
         print("View all password called")
         
