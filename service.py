@@ -1,6 +1,9 @@
+import string
+import random
+
 class PasswordService:
     
-    def add_password(self):
+    def add_password(self, website, username, password):
         print("Add a Password called")
         
     def view_passwords(self):
@@ -17,3 +20,8 @@ class PasswordService:
     
     def view_summary_report(self):
         print("View summary Report called")
+        
+    def generate_secure_password(self, length=12):
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(random.choice(characters) for _ in range(length))
+        return password

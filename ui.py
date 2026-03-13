@@ -12,9 +12,9 @@ class PasswordVaultUI:
     
     
     def display_header(self):
-        print(Fore.CYAN + Style.BRIGHT + "Welcome to the Password Vault!" + Style.RESET_ALL)
-        print(Fore.YELLOW + "Your secure place to store and manage your passwords." + Style.RESET_ALL)
-        print("-" * 50)
+        print(Fore.CYAN + "=" * 50)
+        print(Fore.LIGHTWHITE_EX + "       🔐 SECURE PASSWORD VAULT CLI 🔐")
+        print(Fore.CYAN + "=" * 50)
         
     def display_menu(self):
         while True:
@@ -49,7 +49,26 @@ class PasswordVaultUI:
                     print(Fore.RED + "Invalid choice. Please try again." + Style.RESET_ALL)
     
     def add_password(self):
-        self.service.add_password()
+        print(Fore.YELLOW + "\n--- Add New Password ---")
+        website = input("Website Name: ").strip()
+        username = input("Username/Email: ").strip()
+        
+        if not website or not username:
+            print(Fore.RED + "Website and Username cannot be empty.")
+            return
+        
+        print("Press Enter to use a generated password, or type your own.")
+        password = input("Password: ").strip()
+        if not password:
+            password = self.service.generate_secure_password()
+            print(Fore.GREEN + f"Generated Password: {password}")
+
+        if self.service.add_password(website, username, password):
+            print(Fore.GREEN + "Password saved successfully!")
+        else:
+            print(Fore.RED + "Failed to save password.")
+            
+            
     def view_passwords(self):
         self.service.view_passwords()
     def search_password(self):
