@@ -27,12 +27,24 @@ A professional, high-security command-line tool designed to manage your credenti
    cd PasswordVault
    ```
 
-2. **Install dependencies:**
+2. **Set up a virtual environment (Optional but Recommended):**
+   - **Windows:**
+     ```bash
+     python -m venv .venv
+     .venv\Scripts\activate
+     ```
+   - **macOS/Linux:**
+     ```bash
+     python3 -m venv .venv
+     source .venv/bin/activate
+     ```
+
+3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run the application:**
+4. **Run the application:**
    ```bash
    python main.py
    ```
