@@ -8,6 +8,7 @@ class PasswordService:
         """Service class for managing password operations and business logic."""
         self.storage = StorageManager()
 
+    #add password method
     def add_password(self, website, username, password):
         """Create and add a new credential."""
         data = self.storage.load()
@@ -17,17 +18,26 @@ class PasswordService:
         data.append(new_entry.to_dict())
         return self.storage.save(data)
 
+    #get all passwords method
     def get_passwords(self):
         data = self.storage.load()
         return data
 
+    #search password method
     def search_password(self, query):
         """Search credentials by ID."""
         all_creds = self.get_passwords()
-
         return [c for c in all_creds if query.lower() in str(c["id"])]
 
+
+    #generate password method
+    def generate_secure_password(self, length=12):
+        characters = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(random.choice(characters) for _ in range(length))
+        return password
+
         
+    #delete password method
     def delete_password(self, id):
         """Delete a credential by ID."""
         data = self.storage.load()
@@ -36,6 +46,7 @@ class PasswordService:
             return False
         return self.storage.save(updated_data)
 
+    #update password method
     def update_password(self, id, website, username, password):
         """Update a credential by ID."""
         data = self.storage.load()
@@ -50,10 +61,10 @@ class PasswordService:
                 return self.storage.save(data)
         return False
 
+    #view summary report method
     def view_summary_report(self):
-        print("View summary Report called")
+        data = self.storage.load()
+        total_passwords = len(data)
+        return total_passwords
         
-    def generate_secure_password(self, length=12):
-        characters = string.ascii_letters + string.digits + string.punctuation
-        password = ''.join(random.choice(characters) for _ in range(length))
-        return password
+
