@@ -1,4 +1,4 @@
-from ui import Menu
+from menu import Menu
 
 def main():
     """Main entry point of the application."""

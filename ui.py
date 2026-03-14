@@ -3,6 +3,8 @@ from colorama import Fore, Style, init
 from tabulate import tabulate
 from service import PasswordService
 from utils import Utils
+import os
+import getpass
 
 # Initialize colorama
 init(autoreset=True)
@@ -15,7 +17,7 @@ class PasswordVaultUI:
     def add_password(self):
         print(Fore.YELLOW + "\n--- Add New Password ---")
         
-        website = input("Website Name: ").strip()
+        website = input("Website Name: ").strip().lower()
         username = input("Username/Email: ").strip()
         
         #duplicate check
@@ -30,7 +32,7 @@ class PasswordVaultUI:
         #password input
         print("Press Enter to use a generated password, or type your own.")
         while True:
-            password = input(Fore.BLUE + "Password: ").strip()
+            password = getpass.getpass(Fore.BLUE + "Password: ").strip()
             if not password or Utils.get_password_strength(password) == 5:
                 break
             print(Fore.RED + "Password must be at least 8 characters, and contain at least one uppercase, lowercase, number, and special character.")
@@ -108,7 +110,7 @@ class PasswordVaultUI:
             website = input(Fore.BLUE + "New Website Name: ").strip()
             username = input(Fore.BLUE + "New Username/Email: ").strip()
             while True:
-                password = input(Fore.BLUE + "New Password: ").strip()
+                password = getpass.getpass(Fore.BLUE + "New Password: ").strip()
                 if not password or Utils.get_password_strength(password) == 5:
                     break
                 print(Fore.RED + "Password must be at least 8 characters, and contain at least one uppercase, lowercase, number, and special character.")

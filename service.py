@@ -2,25 +2,29 @@ import string
 import random
 from storage import StorageManager
 from models import Credential
+from crypto_manager import CryptoManager
 
 class PasswordService:
     def __init__(self):
         """Service class for managing password operations and business logic."""
         self.storage = StorageManager()
+        self.crypto = CryptoManager()
 
     #add password method
     def add_password(self, website, username, password):
         """Create and add a new credential."""
         data = self.storage.load()
         new_id = max([item.get("id", 0) for item in data], default=0) + 1
-        
-        new_entry = Credential(website, username, password, id=new_id)
+        encrypted_password = self.crypto.encrypt(password)
+        new_entry = Credential(website, username, encrypted_password, id=new_id)
         data.append(new_entry.to_dict())
         return self.storage.save(data)
 
     #get all passwords method
     def get_passwords(self):
         data = self.storage.load()
+        for item in data:
+            item["password"] = self.crypto.decrypt(item["password"])
         return data
 
     #search password method
@@ -57,7 +61,8 @@ class PasswordService:
                 if username:
                     item["username"] = username
                 if password:
-                    item["password"] = password
+                    encrypted_password = self.crypto.encrypt(password)
+                    item["password"] = encrypted_password
                 return self.storage.save(data)
         return False
 

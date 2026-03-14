@@ -1,11 +1,11 @@
-import ui
+from ui import PasswordVaultUI
 from colorama import Fore, Style, init
 import sys
 
 # Initialize colorama
 init(autoreset=True)    
 
-class Menu(ui.PasswordVaultUI):
+class Menu(PasswordVaultUI):
     def display_header(self):
         print(Fore.CYAN + "=" * 50)
         print(Fore.LIGHTWHITE_EX + "       🔐 SECURE PASSWORD VAULT CLI 🔐")
