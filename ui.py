@@ -2,6 +2,7 @@ import sys
 from colorama import Fore, Style, init
 from tabulate import tabulate
 from service import PasswordService
+from utils import Utils
 
 # Initialize colorama
 init(autoreset=True)
@@ -62,7 +63,12 @@ class PasswordVaultUI:
             return
         
         print("Press Enter to use a generated password, or type your own.")
-        password = input("Password: ").strip()
+        while True:
+            password = input(Fore.BLUE + "Password: ").strip()
+            if not password or Utils.get_password_strength(password) == 5:
+                break
+            print(Fore.RED + "Password must be at least 8 characters, and contain at least one uppercase, lowercase, number, and special character.")
+
         if not password:
             password = self.service.generate_secure_password()
             print(Fore.GREEN + f"Generated Password: {password}")
@@ -125,10 +131,14 @@ class PasswordVaultUI:
     def update_password(self):
         try:
             id = int(input("Enter Credential ID to update: "))
-            print("Leave fields blank if you do not want to change them.")
-            website = input("New Website Name: ").strip()
-            username = input("New Username/Email: ").strip()
-            password = input("New Password: ").strip()
+            print(Fore.YELLOW + "Leave fields blank if you do not want to change them.")
+            website = input(Fore.BLUE + "New Website Name: ").strip()
+            username = input(Fore.BLUE + "New Username/Email: ").strip()
+            while True:
+                password = input(Fore.BLUE + "New Password: ").strip()
+                if not password or Utils.get_password_strength(password) == 5:
+                    break
+                print(Fore.RED + "Password must be at least 8 characters, and contain at least one uppercase, lowercase, number, and special character.")
             
             if self.service.update_password(id, website, username, password):
                 print(Fore.GREEN + f"Credential {id} updated.")
