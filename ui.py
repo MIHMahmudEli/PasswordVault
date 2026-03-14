@@ -33,7 +33,7 @@ class PasswordVaultUI:
                 case '1':
                     self.add_password()
                 case '2':
-                    self.view_passwords()
+                    self.get_passwords()
                 case '3':
                     self.search_password()
                 case '4':
@@ -69,8 +69,8 @@ class PasswordVaultUI:
             print(Fore.RED + "Failed to save password.")
             
             
-    def view_passwords(self):
-        data = self.service.view_passwords()
+    def get_passwords(self):
+        data = self.service.get_passwords()
 
         if not data:
             print(Fore.YELLOW + "\nNo credentials stored yet.")
@@ -78,10 +78,22 @@ class PasswordVaultUI:
         
         table = [[entry["website"], entry["username"], entry["password"]] for entry in data]
         print("\n" + tabulate(table, headers=["Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
-        
             
     def search_password(self):
-        self.service.search_password()
+        query = input("\nEnter search term (website or username): ").strip()
+        if not query:
+            return
+        
+        results = self.service.search_password(query)
+        if not results:
+            print(Fore.RED + "No results found.")
+            return
+        
+        table = [[entry["website"], entry["username"], entry["password"]] for entry in results]
+        print("\n" + tabulate(table, headers=["Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
+ 
+        
+        
     def generate_password(self):
         self.service.generate_password()
     def delete_password(self):

@@ -15,12 +15,19 @@ class PasswordService:
         }
         return self.storage.save([data])
 
-    def view_passwords(self):
+    def get_passwords(self):
         data = self.storage.load()
         return data
 
-    def search_password(self):
-        print("Search All Password called")
+    def search_password(self, query):
+        """Search credentials by website or username."""
+        all_pass = self.get_passwords()
+        results = []
+        for p in all_pass:
+            if query.lower() in p.get('website', '').lower() or query.lower() in p.get('username', '').lower():
+                results.append(p)
+        return results
+        
     
     def generate_password(self):
         print("Generate a password called")
