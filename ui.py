@@ -70,7 +70,16 @@ class PasswordVaultUI:
             
             
     def view_passwords(self):
-        self.service.view_passwords()
+        data = self.service.view_passwords()
+
+        if not data:
+            print(Fore.YELLOW + "\nNo credentials stored yet.")
+            return
+        
+        table = [[entry["website"], entry["username"], entry["password"]] for entry in data]
+        print("\n" + tabulate(table, headers=["Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
+        
+            
     def search_password(self):
         self.service.search_password()
     def generate_password(self):

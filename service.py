@@ -16,8 +16,9 @@ class PasswordService:
         return self.storage.save([data])
 
     def view_passwords(self):
-        print("View all password called")
-        
+        data = self.storage.load()
+        return data
+
     def search_password(self):
         print("Search All Password called")
     

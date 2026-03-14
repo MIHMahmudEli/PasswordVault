@@ -1,4 +1,5 @@
 import json
+import os
 
 class StorageManager:
     """Storage class for handling JSON data persistence."""
@@ -14,6 +15,17 @@ class StorageManager:
         except Exception as e:
             print(f"Error saving data: {e}")
             return False
+        
+    def load(self):
+        """Load data from the JSON file."""
+        if not os.path.exists(self.file_path):
+            return []
+        try:
+            with open(self.file_path, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, Exception) as e:
+            print(f"Error loading data: {e}")
+            return []
         
 
         
