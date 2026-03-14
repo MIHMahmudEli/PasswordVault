@@ -1,19 +1,21 @@
 import string
 import random
 from storage import StorageManager
+from models import Credential
 
 class PasswordService:
     def __init__(self):
+        """Service class for managing password operations and business logic."""
         self.storage = StorageManager()
 
     def add_password(self, website, username, password):
         """Create and add a new credential."""
-        data = {
-            "website": website,
-            "username": username,
-            "password": password
-        }
-        return self.storage.save([data])
+        data = self.storage.load()
+        new_id = max([item.get("id", 0) for item in data], default=0) + 1
+        
+        new_entry = Credential(website, username, password, id=new_id)
+        data.append(new_entry.to_dict())
+        return self.storage.save(data)
 
     def get_passwords(self):
         data = self.storage.load()
@@ -24,26 +26,19 @@ class PasswordService:
         all_pass = self.get_passwords()
         results = []
         for p in all_pass:
-            if query.lower() in p.get('website', '').lower() or query.lower() in p.get('username', '').lower():
+            if query.lower() in p.website.lower() or query.lower() in p.username.lower():
                 results.append(p)
         return results
         
-    
-    def generate_password(self):
-        try:
-            length = input("Enter password length (default 16): ").strip()
-            length = int(length) if length else 16
-            pwd = self.service.generate_secure_password(length)
-            print(Fore.GREEN + f"\nGenerated Password: {pwd}")
-        except ValueError:
-            print(Fore.RED + "Invalid length. Using default 16.")
-            pwd = self.service.generate_secure_password(16)
-            print(Fore.GREEN + f"Generated Password: {pwd}")
-                    
+    def delete_password(self, id):
+        """Delete a credential by ID."""
+        data = self.storage.load()
+        updated_data = [item for item in data if item.get("id") != id]
+        if len(data) == len(updated_data):
+            return False
+        return self.storage.save(updated_data)
         
-    def delete_password(self):
-        print("Delete Password Callded")
-    
+
     def view_summary_report(self):
         print("View summary Report called")
         
