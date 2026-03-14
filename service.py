@@ -30,7 +30,16 @@ class PasswordService:
         
     
     def generate_password(self):
-        print("Generate a password called")
+        try:
+            length = input("Enter password length (default 16): ").strip()
+            length = int(length) if length else 16
+            pwd = self.service.generate_secure_password(length)
+            print(Fore.GREEN + f"\nGenerated Password: {pwd}")
+        except ValueError:
+            print(Fore.RED + "Invalid length. Using default 16.")
+            pwd = self.service.generate_secure_password(16)
+            print(Fore.GREEN + f"Generated Password: {pwd}")
+                    
         
     def delete_password(self):
         print("Delete Password Callded")
