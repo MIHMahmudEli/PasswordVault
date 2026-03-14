@@ -58,7 +58,7 @@ class PasswordVaultUI:
            
     #search password method
     def search_password(self):
-        query = input("\nEnter search term (website or username or ID): ").strip()
+        query = input("\nEnter search term ID: ").strip()
         if not query:
             return
         
@@ -99,7 +99,7 @@ class PasswordVaultUI:
             id = int(input("Enter Credential ID to update: "))
 
             #check if id exists
-            if not self.service.search_password(id):
+            if not self.service.search_password(str(id)):
                 print(Fore.RED + "Credential ID not found.")
                 return
             
