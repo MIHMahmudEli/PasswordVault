@@ -24,7 +24,8 @@ class PasswordVaultUI:
             print("3. " + Fore.BLUE + "Search for a password" + Style.RESET_ALL)
             print("4. " + Fore.YELLOW + "Generate a password" + Style.RESET_ALL)
             print("5. " + Fore.RED + "Delete a password" + Style.RESET_ALL)
-            print("6. " + Fore.MAGENTA + "View summary report" + Style.RESET_ALL)
+            print("6. " + Fore.MAGENTA + "Update a password" + Style.RESET_ALL)
+            print("7. " + Fore.MAGENTA + "View summary report" + Style.RESET_ALL)
             print("0. " + Fore.RED + "Exit" + Style.RESET_ALL)
             
             choice = input("\nChoose an option: ")
@@ -41,6 +42,8 @@ class PasswordVaultUI:
                 case '5':
                     self.delete_password()
                 case '6':
+                    self.update_password()
+                case '7':
                     self.view_summary_report()
                 case '0':
                     print(Fore.GREEN + "Thank you for using the Password Vault!" + Style.RESET_ALL)
@@ -48,6 +51,7 @@ class PasswordVaultUI:
                 case _:
                     print(Fore.RED + "Invalid choice. Please try again." + Style.RESET_ALL)
     
+    #add password method
     def add_password(self):
         print(Fore.YELLOW + "\n--- Add New Password ---")
         website = input("Website Name: ").strip()
@@ -68,7 +72,8 @@ class PasswordVaultUI:
         else:
             print(Fore.RED + "Failed to save password.")
             
-            
+    
+    #view password method
     def get_passwords(self):
         data = self.service.get_passwords()
 
@@ -76,10 +81,10 @@ class PasswordVaultUI:
             print(Fore.YELLOW + "\nNo credentials stored yet.")
             return
         
-        table = [[entry["website"], entry["username"], entry["password"]] for entry in data]
-        print("\n" + tabulate(table, headers=["Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
-            
-
+        table = [[entry["id"], entry["website"], entry["username"], entry["password"]] for entry in data]
+        print("\n" + tabulate(table, headers=["ID", "Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
+           
+    #search password method
     def search_password(self):
         query = input("\nEnter search term (website or username): ").strip()
         if not query:
@@ -90,10 +95,10 @@ class PasswordVaultUI:
             print(Fore.RED + "No results found.")
             return
         
-        table = [[entry["website"], entry["username"], entry["password"]] for entry in results]
-        print("\n" + tabulate(table, headers=["Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
+        table = [[entry["id"], entry["website"], entry["username"], entry["password"]] for entry in results]
+        print("\n" + tabulate(table, headers=["ID", "Website", "Username/Email", "Password"], tablefmt="fancy_grid"))   
 
-        
+    #generate password method    
     def generate_password(self):
         try:
             length = input("Enter password length (default 16): ").strip()
@@ -104,10 +109,35 @@ class PasswordVaultUI:
             print(Fore.RED + "Invalid length. Using default 16.")
             pwd = self.service.generate_secure_password(16)
             print(Fore.GREEN + f"Generated Password: {pwd}")
-    
-            
+
+    #delete password method
     def delete_password(self):
-        self.service.delete_password()
+        try:
+            id = int(input("\nEnter Credential ID to delete: "))
+            if self.service.delete_password(id):
+                print(Fore.GREEN + f"Credential {id} deleted.")
+            else:
+                print(Fore.RED + "Credential ID not found.")
+        except ValueError:
+            print(Fore.RED + "Invalid ID.")
+
+    #update password method
+    def update_password(self):
+        try:
+            id = int(input("Enter Credential ID to update: "))
+            print("Leave fields blank if you do not want to change them.")
+            website = input("New Website Name: ").strip()
+            username = input("New Username/Email: ").strip()
+            password = input("New Password: ").strip()
+            
+            if self.service.update_password(id, website, username, password):
+                print(Fore.GREEN + f"Credential {id} updated.")
+            else:
+                print(Fore.RED + "Credential ID not found.")
+        except ValueError:
+            print(Fore.RED + "Invalid ID.")
+
+    #view summary report method
     def view_summary_report(self):
         self.service.view_summary_report()
     

@@ -34,7 +34,20 @@ class PasswordService:
         if len(data) == len(updated_data):
             return False
         return self.storage.save(updated_data)
-        
+
+    def update_password(self, id, website, username, password):
+        """Update a credential by ID."""
+        data = self.storage.load()
+        for item in data:
+            if item.get("id") == id:
+                if website:
+                    item["website"] = website
+                if username:
+                    item["username"] = username
+                if password:
+                    item["password"] = password
+                return self.storage.save(data)
+        return False
 
     def view_summary_report(self):
         print("View summary Report called")
