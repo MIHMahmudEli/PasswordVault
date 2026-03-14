@@ -1,8 +1,8 @@
-from ui import PasswordVaultUI
+from ui import Menu
 
 def main():
     """Main entry point of the application."""
-    app = PasswordVaultUI()
+    app = Menu()
     
     try:
         app.display_menu()
