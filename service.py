@@ -63,8 +63,13 @@ class PasswordService:
 
     #view summary report method
     def view_summary_report(self):
+        """Calculate summary statistics."""
         data = self.storage.load()
-        total_passwords = len(data)
-        return total_passwords
+        total_accounts = len(data)
+        websites = set(item.get("website") for item in data)
+        return {
+            "total_entries": total_accounts,
+            "unique_websites": len(websites)
+        }
         
 

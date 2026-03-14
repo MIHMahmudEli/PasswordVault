@@ -122,6 +122,7 @@ class PasswordVaultUI:
 
     #view summary report method
     def view_summary_report(self):
-        total_passwords = self.service.view_summary_report()
-        print(Fore.GREEN + f"\nTotal Passwords: {total_passwords}")
+        stats = self.service.view_summary_report()
+        print(Fore.GREEN + f"\nTotal Passwords: {stats['total_entries']}")
+        print(Fore.GREEN + f"Unique Websites: {stats['unique_websites']}")
         
