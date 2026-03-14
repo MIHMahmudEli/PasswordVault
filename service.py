@@ -23,12 +23,9 @@ class PasswordService:
 
     def search_password(self, query):
         """Search credentials by website or username."""
-        all_pass = self.get_passwords()
-        results = []
-        for p in all_pass:
-            if query.lower() in p.website.lower() or query.lower() in p.username.lower():
-                results.append(p)
-        return results
+        all_creds = self.get_passwords()
+        return [c for c in all_creds if query.lower() in c["website"].lower() or query.lower() in c["username"].lower()]
+
         
     def delete_password(self, id):
         """Delete a credential by ID."""
