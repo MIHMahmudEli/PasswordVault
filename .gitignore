@@ -1,0 +1,19 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# Project Specific
+secret.key
+# passwords.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
