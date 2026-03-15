@@ -60,7 +60,7 @@ class PasswordVaultUI:
            
     #search password method
     def search_password(self):
-        query = input("\nEnter search term Username/Email: ").strip()
+        query = input("\nEnter search term Username/Email or Website Name: ").strip()
         if not query:
             return
         
@@ -98,13 +98,21 @@ class PasswordVaultUI:
     #update password method
     def update_password(self):
         try:
-            id = int(input("Enter Credential ID to update: "))
+            query = input("Enter Credential Username/Email or Website Name to update: ").strip()
 
             #check if id exists
-            if not self.service.search_password(str(id)):
+            if not self.service.search_password(query):
                 print(Fore.RED + "Credential ID not found.")
                 return
             
+            results = self.service.search_password(query)
+            table = [[entry["id"], entry["website"], entry["username"], entry["password"]] for entry in results]
+            print("\n" + tabulate(table, headers=["ID", "Website", "Username/Email", "Password"], tablefmt="fancy_grid"))
+
+            id = int(input("Enter Credential ID to update: "))
+            if not self.service.search_password(str(id)):
+                print(Fore.RED + "Credential ID not found.")
+                return
 
             print(Fore.YELLOW + "Leave fields blank if you do not want to change them.")
             website = input(Fore.BLUE + "New Website Name: ").strip()

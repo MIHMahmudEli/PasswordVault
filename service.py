@@ -31,7 +31,7 @@ class PasswordService:
     def search_password(self, query):
         """Search credentials by ID."""
         all_creds = self.get_passwords()
-        return [c for c in all_creds if query.lower() in c["username"]]
+        return [c for c in all_creds if query.lower() in c["username"] or query.lower() in c["website"] or str(c["id"]) == query]
 
 
     #generate password method
