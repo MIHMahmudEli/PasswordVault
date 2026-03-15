@@ -60,7 +60,7 @@ class PasswordVaultUI:
            
     #search password method
     def search_password(self):
-        query = input("\nEnter search term ID: ").strip()
+        query = input("\nEnter search term Username/Email: ").strip()
         if not query:
             return
         
