@@ -10,7 +10,9 @@ ENV/
 
 # Project Specific
 secret.key
-# passwords.json
+passwords.json
+~WRL*.tmp
+~$*.docx
 
 # IDEs
 .vscode/
