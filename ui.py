@@ -1,9 +1,7 @@
-import sys
 from colorama import Fore, Style, init
 from tabulate import tabulate
 from service import PasswordService
 from utils import Utils
-import os
 import getpass
 
 # Initialize colorama
